@@ -1,5 +1,5 @@
 export const timezone = process.env.TZ_NAME || 'Asia/Shanghai';
-export const schedule = process.env.COLLECT_CRON || '0 8 * * *';
+export const schedule = process.env.COLLECT_CRON || '0 */2 * * *';
 export const categories = [
   { id: 'all', label: '全部资讯' }, { id: 'world', label: '全球要闻' },
   { id: 'technology', label: '科技数码' }, { id: 'ai', label: '人工智能' },
