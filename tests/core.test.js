@@ -5,6 +5,7 @@ import { parseRss, parseSkills, parseGithub, safeUrl } from '../server/parsers.j
 import { createStore, dayKey } from '../server/store.js';
 import { createCollector } from '../server/collector.js';
 import { createApi } from '../server/app.js';
+import { sources } from '../server/config.js';
 
 const source = { id: 'test-rss', name: 'Test', kind: 'news', type: 'rss', category: 'world', url: 'https://example.org/feed' };
 const xml = `<?xml version="1.0"?><rss version="2.0"><channel><title>Test</title><link>https://example.org</link><description>Test</description><item><title><![CDATA[Hello &amp; World]]></title><link>https://example.org/article</link><description><![CDATA[<p>Real <b>news</b> &amp; context</p>]]></description><pubDate>Thu, 22 Oct 2026 20:00:00 GMT</pubDate></item><item><title>Bad link</title><link>javascript:alert(1)</link></item></channel></rss>`;
@@ -13,6 +14,17 @@ test('RSS parses actual content and dates, strips HTML, rejects executable links
   assert.equal(items.length, 1); assert.equal(items[0].title, 'Hello & World');
   assert.equal(items[0].description, 'Real news & context'); assert.equal(items[0].publishedAt, '2026-10-22T20:00:00.000Z');
   assert.equal(safeUrl('data:text/html,a'), null);
+});
+test('Hacker News preserves discussion identities and does not treat comment links as summaries', async () => {
+  const hn = sources.find(s => s.id === 'hacker-news');
+  const feed = `<rss version="2.0"><channel><title>HN</title>${[1, 2].map(id => `<item><title>Ask HN ${id}</title><link>https://news.ycombinator.com/item?id=${id}</link><comments>https://news.ycombinator.com/item?id=${id}</comments><description><![CDATA[<a href="https://news.ycombinator.com/item?id=${id}">Comments</a>]]></description></item>`).join('')}</channel></rss>`;
+  const items = await parseRss(feed, hn);
+  assert.equal(items.length, 2); assert.notEqual(items[0].id, items[1].id);
+  assert.equal(items[0].category, 'technology'); assert.equal(items[0].language, 'en');
+  assert.equal(items[0].description, '');
+  assert.equal(items[0].discussionUrl, 'https://news.ycombinator.com/item?id=1');
+  const external = await parseRss(feed.replace('<link>https://news.ycombinator.com/item?id=1</link>', '<link>https://example.org/article</link>'), hn);
+  assert.equal(external[0].url, 'https://example.org/article'); assert.equal(external[0].id, items[0].id);
 });
 test('Skills parses escaped streaming JSON without executing scripts', () => {
   const data = [{ source: 'vercel-labs/skills', skillId: 'find-skills', name: 'find-skills', installs: 3997507, weeklyInstalls: [1, 2, 3], isOfficial: true }];

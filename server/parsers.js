@@ -19,7 +19,10 @@ export async function parseRss(xml, source, now = new Date().toISOString()) {
     const url = safeUrl(item.link);
     if (!url || !item.title) return [];
     const date = new Date(item.isoDate || item.pubDate || '');
-    return [{ ...base(source, now), id: hash(`news:${url.replace(/[?#].*$/, '')}`), title: plain(item.title), description: plain(item.contentSnippet || item.description || item.content || item.summary).slice(0, 700), url, publishedAt: Number.isFinite(date.getTime()) ? date.toISOString() : null, metrics: {} }];
+    const hackerNews = source.id === 'hacker-news';
+    const discussionUrl = hackerNews ? safeUrl(item.comments) : null;
+    const identityUrl = hackerNews ? discussionUrl || url : url.replace(/[?#].*$/, '');
+    return [{ ...base(source, now), id: hash(`news:${identityUrl}`), title: plain(item.title), description: hackerNews ? '' : plain(item.contentSnippet || item.description || item.content || item.summary).slice(0, 700), url, ...(discussionUrl ? { discussionUrl } : {}), publishedAt: Number.isFinite(date.getTime()) ? date.toISOString() : null, metrics: {} }];
   });
 }
 // Next.js streams JSON strings. Decode those strings as data; never execute page scripts.

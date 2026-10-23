@@ -20,7 +20,7 @@ npm start
 ## 已实现
 
 - 八大新闻分类：全球、科技、AI、商业、科学、健康、气候、文化体育。
-- 13 个公开 RSS 来源，原始标题与来源摘要、发布时间、跳转原文。
+- 14 个公开 RSS 来源，原始标题与来源摘要、发布时间、跳转原文。Hacker News 首页 RSS 归入“科技数码”，保留原文和讨论入口；该来源不提供新闻摘要。
 - Skills.sh：累计安装榜、24h 趋势榜、热门增长榜，各取前 300 项。保留来源排名、指标、8 周趋势（来源提供时）；GitHub 托管的技能可复制安装命令，网站托管技能跳转原站查看安装方法。
 - GitHub Trending：每日、每周、每月榜；语言、总 Star、时间段新增 Star。
 - 搜索、语言/新闻来源/分类筛选、收藏、每日快照、JSON 导出。
@@ -64,7 +64,7 @@ npm run check               # 核心测试与生产构建
 
 ## 来源与指标
 
-BBC / BBC 中文 / DW / The Guardian / Nature / TechCrunch 的公开 RSS；[Skills.sh](https://skills.sh/) 的公开榜单；[GitHub Trending](https://github.com/trending) 的公开趋势页。
+BBC / BBC 中文 / DW / The Guardian / Nature / TechCrunch / [Hacker News](https://news.ycombinator.com/rss) 的公开 RSS；[Skills.sh](https://skills.sh/) 的公开榜单；[GitHub Trending](https://github.com/trending) 的公开趋势页。
 
 新闻不抓取付费全文，也不自动生成 AI 摘要。当前主要为英文信息，另提供 BBC 中文来源；点击“译为中文”后翻译该条新闻的标题/来源摘要或项目介绍，中文显示在对应原文下，项目名与 Skill 标识保持原样。使用百炼 Qwen-MT-Flash 机器翻译，按接口规则计费，隐藏/再次显示和缓存命中不重复调用。没有凭证、超时或限流时显示可重试的错误，不填充假译文。缓存键包含原文内容，内容变化会重新翻译。源站可能变更页面、限流、区域阻断或撤销 RSS；来源页会如实显示。榜单指标分别沿用原站口径：Skills 累计安装与趋势指标、GitHub 指定期间新增 Star 不能横向混算。GitHub 排名不是自建“综合热度”。按日期筛选的是**采集快照日期**，并非只显示当日发布的文章；RSS 本身可包含前几日文章。
 

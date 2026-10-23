@@ -12,6 +12,7 @@ export const sources = [
   rss('bbc-world', 'BBC · 全球', 'https://feeds.bbci.co.uk/news/world/rss.xml', 'world'),
   rss('dw-world', 'DW · 国际', 'https://rss.dw.com/rdf/rss-en-world', 'world'),
   rss('bbc-tech', 'BBC · 科技', 'https://feeds.bbci.co.uk/news/technology/rss.xml', 'technology'),
+  rss('hacker-news', 'Hacker News', 'https://news.ycombinator.com/rss', 'technology'),
   rss('tc-ai', 'TechCrunch · AI', 'https://techcrunch.com/category/artificial-intelligence/feed/', 'ai'),
   rss('bbc-business', 'BBC · 商业', 'https://feeds.bbci.co.uk/news/business/rss.xml', 'business'),
   rss('guardian-business', 'The Guardian · 财经', 'https://www.theguardian.com/business/rss', 'business'),
