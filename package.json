@@ -1,0 +1,31 @@
+{
+  "name": "daily-world",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.16"
+  },
+  "scripts": {
+    "dev": "node --watch server/index.js",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "collect": "node server/cli.js",
+    "test": "node --test tests/*.test.js",
+    "check": "npm test && npm run build"
+  },
+  "dependencies": {
+    "cheerio": "1.2.0",
+    "express": "5.3.0",
+    "lucide-react": "^0.577.0",
+    "node-cron": "^4.2.1",
+    "opencc-js": "1.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "rss-parser": "3.13.0",
+    "undici": "^7.22.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.5"
+  }
+}
